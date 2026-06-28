@@ -77,7 +77,7 @@ com Airflow.
 
 ```bash
 # 1. clonar o repositório
-git clone https://github.com/seu-usuario/lakehouse-bitcoin.git
+git clone https://github.com/DalissonSilva/lakehouse-bitcoin.git
 
 # 2. instalar dependências dbt
 cd dbt && dbt deps
