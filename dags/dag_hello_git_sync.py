@@ -4,7 +4,7 @@ from airflow.operators.python import PythonOperator
 from airflow.operators.bash import BashOperator
 import sys
 
-sys.path.insert(0, '/opt/airflow/scripts')
+sys.path.insert(0, '/opt/airflow/scripts_root/current/scripts')
 from hello_git_sync import hello_git_sync
 
 default_args = {
@@ -20,12 +20,12 @@ with DAG(
     catchup=False,
     default_args=default_args,
     tags=["teste", "git-sync", "github"],
-    description="Valida integração GitHub → git-sync → Airflow"
+    description="Valida integração GitHub → git-sync → Airflow (100% automático)"
 ) as dag:
 
     t1 = BashOperator(
         task_id="verifica_sync",
-        bash_command="echo '=== git-sync info ===' && echo 'Pasta dags:' && ls /opt/airflow/dags/ && echo 'Horário:' $(date)",
+        bash_command="echo '=== git-sync info ===' && echo 'Pasta dags:' && ls /opt/airflow/dags/current/dags/ && echo 'Pasta scripts:' && ls /opt/airflow/scripts_root/current/scripts/ && echo 'Horário:' $(date)",
     )
 
     t2 = PythonOperator(
