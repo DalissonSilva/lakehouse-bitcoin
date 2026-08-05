@@ -158,7 +158,7 @@ def processar_confirmado():
     df["ingest_ts_utc"] = datetime.now(timezone.utc).isoformat()
     df["source_symbol"] = SYMBOL
     df["fechada"] = True
-    df.to_parquet(arquivo, engine="pyarrow", index=False, compression="snappy")
+    df.to_parquet(arquivo, engine="pyarrow", index=False, compression="snappy", coerce_timestamps="us", allow_truncated_timestamps=True,)
 
     print(f"{len(df)} linhas gravadas em {arquivo}")
     print("Watermark nao e persistido localmente -- proxima execucao le o MAX confirmado direto da Bronze.")
@@ -206,7 +206,7 @@ def processar_vela_aberta():
     pasta = LANDING_BASE / f"ingest_date={agora.date().isoformat()}"
     pasta.mkdir(parents=True, exist_ok=True)
     arquivo = pasta / "vela_em_aberto.parquet"
-    df.to_parquet(arquivo, engine="pyarrow", index=False, compression="snappy")
+    df.to_parquet(arquivo, engine="pyarrow", index=False, compression="snappy", coerce_timestamps="us", allow_truncated_timestamps=True,)
     print(f"\nEstado atual gravado (sobrescrito) em: {arquivo}")
 
 
