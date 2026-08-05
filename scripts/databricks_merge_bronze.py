@@ -52,7 +52,9 @@ def executar(w, warehouse_id, sql, descricao):
     )
     print(f"Status: {resultado.status.state}")
     if resultado.status.state.value == "FAILED":
-        print(f"ERRO: {resultado.status.error}")
+        erro = resultado.status.error
+        print(f"ERRO: {erro}")
+        raise RuntimeError(f"{descricao} falhou: {erro}")
     return resultado
 
 
