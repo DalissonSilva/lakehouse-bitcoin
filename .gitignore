@@ -1,4 +1,3 @@
 dbt/target/
 dbt/dbt_packages/
 dbt/logs/
-__pycache__/
