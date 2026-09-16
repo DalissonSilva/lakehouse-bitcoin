@@ -16,7 +16,7 @@
 
 -- COMMAND ----------
 
-USE CATALOG workspace;
+USE CATALOG bitcoin;
 SET TIME ZONE 'UTC';
 CREATE SCHEMA IF NOT EXISTS gold COMMENT 'Métricas de negócio prontas para consumo';
 

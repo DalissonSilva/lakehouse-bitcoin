@@ -9,7 +9,7 @@
 
 -- COMMAND ----------
 
-USE CATALOG workspace;
+USE CATALOG bitcoin;
 CREATE SCHEMA IF NOT EXISTS controle COMMENT 'Views de monitoramento sobre o histórico Delta';
 
 -- COMMAND ----------
@@ -23,7 +23,7 @@ SELECT
   CAST(operationMetrics['numTargetRowsUpdated']  AS BIGINT)    AS linhas_atualizadas,
   CAST(operationMetrics['numTargetRowsDeleted']  AS BIGINT)    AS linhas_deletadas,
   CAST(operationMetrics['executionTimeMs'] AS BIGINT) / 1000.0 AS duracao_seg
-FROM (DESCRIBE HISTORY workspace.silver.btc_candles_diarios)
+FROM (DESCRIBE HISTORY bitcoin.silver.btc_candles_diarios)
 WHERE operation = 'MERGE';
 
 -- COMMAND ----------
@@ -33,28 +33,28 @@ CREATE OR REPLACE VIEW controle.historico_gold AS
 SELECT 'btc_diario' AS tabela, timestamp AS executado_em, operation AS operacao,
        CAST(operationMetrics['numOutputRows'] AS BIGINT) AS linhas,
        CAST(operationMetrics['executionTimeMs'] AS BIGINT) / 1000.0 AS duracao_seg
-FROM (DESCRIBE HISTORY workspace.gold.btc_diario)
+FROM (DESCRIBE HISTORY bitcoin.gold.btc_diario)
 WHERE operation IN ('CREATE OR REPLACE TABLE AS SELECT', 'CREATE TABLE AS SELECT')
 
 UNION ALL
 SELECT 'btc_mensal', timestamp, operation,
        CAST(operationMetrics['numOutputRows'] AS BIGINT),
        CAST(operationMetrics['executionTimeMs'] AS BIGINT) / 1000.0
-FROM (DESCRIBE HISTORY workspace.gold.btc_mensal)
+FROM (DESCRIBE HISTORY bitcoin.gold.btc_mensal)
 WHERE operation IN ('CREATE OR REPLACE TABLE AS SELECT', 'CREATE TABLE AS SELECT')
 
 UNION ALL
 SELECT 'btc_dia_semana', timestamp, operation,
        CAST(operationMetrics['numOutputRows'] AS BIGINT),
        CAST(operationMetrics['executionTimeMs'] AS BIGINT) / 1000.0
-FROM (DESCRIBE HISTORY workspace.gold.btc_dia_semana)
+FROM (DESCRIBE HISTORY bitcoin.gold.btc_dia_semana)
 WHERE operation IN ('CREATE OR REPLACE TABLE AS SELECT', 'CREATE TABLE AS SELECT')
 
 UNION ALL
 SELECT 'btc_kpis', timestamp, operation,
        CAST(operationMetrics['numOutputRows'] AS BIGINT),
        CAST(operationMetrics['executionTimeMs'] AS BIGINT) / 1000.0
-FROM (DESCRIBE HISTORY workspace.gold.btc_kpis)
+FROM (DESCRIBE HISTORY bitcoin.gold.btc_kpis)
 WHERE operation IN ('CREATE OR REPLACE TABLE AS SELECT', 'CREATE TABLE AS SELECT');
 
 -- COMMAND ----------

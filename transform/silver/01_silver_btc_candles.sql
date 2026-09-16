@@ -14,7 +14,7 @@
 -- COMMAND ----------
 
 -- DBTITLE 1,Parâmetros
-USE CATALOG workspace;          -- catálogo padrão da Free Edition
+USE CATALOG bitcoin;             -- catálogo do projeto
 SET TIME ZONE 'UTC';            -- candles da Binance são em UTC
 
 CREATE SCHEMA IF NOT EXISTS silver COMMENT 'Dados limpos, deduplicados e validados';
