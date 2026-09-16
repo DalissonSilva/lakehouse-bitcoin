@@ -68,7 +68,7 @@ WITH tipada AS (
     COALESCE(fechada, false)                    AS candle_fechado,
     TRY_TO_TIMESTAMP(ingest_ts_utc)             AS ingest_ts_utc,
     TO_JSON(STRUCT(*))                          AS registro
-  FROM bronze.btc_klines_1d                     -- << ajuste para o nome da sua tabela bronze
+  FROM bronze.btc_ohlcv
 ),
 dedup AS (
   SELECT *
