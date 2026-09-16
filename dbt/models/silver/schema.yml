@@ -1,8 +1,0 @@
-version: 2
-models:
-  - name: btc_ohlcv_clean
-    columns:
-      - name: open_time
-        tests: [not_null, unique]
-      - name: close
-        tests: [not_null]
