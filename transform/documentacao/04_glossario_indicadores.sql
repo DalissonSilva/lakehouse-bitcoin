@@ -123,4 +123,3 @@ ORDER BY ordem;
 -- DBTITLE 1,Adicionar novo indicador (exemplo — rode isolado, quando precisar)
 -- INSERT INTO documentacao.glossario_indicadores VALUES
 -- (17, 'Categoria', 'Nome do indicador', 'Definição em linguagem simples.', 'Fórmula de cálculo.', 'tabela.coluna');
-EOF
