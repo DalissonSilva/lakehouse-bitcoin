@@ -1,4 +1,3 @@
-cat > transform/documentacao/04_glossario_indicadores.sql << 'EOF'
 -- Databricks notebook source
 -- MAGIC %md
 -- MAGIC # 04 · Glossário — indicadores do dashboard
