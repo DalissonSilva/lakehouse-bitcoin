@@ -205,4 +205,4 @@ primeira entrega para não adiar o que já estava pronto.
 
 ## Autor
 
-Dalisson Silva · [https://www.linkedin.com/in/dalisson-silva-a01a591a7/](#) · [https://github.com/DalissonSilva](#)
+Dalisson Silva · [LinkedIn](https://www.linkedin.com/in/dalisson-silva-a01a591a7/) · [GitHub](https://github.com/DalissonSilva)
