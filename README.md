@@ -71,6 +71,12 @@ nada. O mesmo vale para adicionar uma biblioteca nova: basta declarar no
 `requirements.txt` do projeto e subir o Docker de novo — sem tocar em
 nenhum servidor manualmente.
 
+![GitHub integrado com Databricks](docs/images/git_databricks.png)
+
+Outro ponto importante é toda integração entre as ferramentas, 
+o Databricks também integrado com o GitHub - Combo (Airflow + GitHub + Databricks)
+conectados, padronizados e versionados.
+
 ## Por que arquitetura medalhão, e não uma tabela só
 
 A bronze recebe o mesmo dia mais de uma vez — a exchange grava o candle
