@@ -8,6 +8,28 @@ Qlik Cloud com identidade visual própria.
 Projeto pessoal, sem vínculo com nenhuma empresa — construído para aprender
 e demonstrar engenharia de dados de ponta a ponta.
 
+![Stack do projeto](docs/images/stack.png)
+
+## A pergunta de negócio
+
+Todo painel deveria existir para responder algo específico, não só para
+exibir gráficos bonitos. Antes de escrever a primeira linha de SQL, defini
+as perguntas que o Panorama precisa responder em menos de 10 segundos de
+olhar:
+
+- **O preço de hoje está caro ou barato, historicamente?** — resolvido pela
+  distância da máxima histórica (drawdown) e pelas médias móveis.
+- **O mercado está mais arriscado que o normal agora?** — resolvido pela
+  volatilidade anualizada de 30 dias.
+- **Existe um padrão sazonal que valha a pena considerar?** — resolvido
+  pelo heatmap de retorno mensal e pelo retorno médio por dia da semana.
+- **O volume de hoje é normal, ou está acontecendo algo fora do padrão?**
+  — resolvido pelo indicador de volume relativo à média de 30 dias.
+
+Cada tabela da camada Gold existe porque responde a uma dessas perguntas
+— não o contrário. Isso guiou toda a modelagem: comecei pela pergunta,
+não pela tabela.
+
 ## O pipeline, de verdade
 
 ```
@@ -32,6 +54,20 @@ Qlik Cloud — dashboard "Blockwatch", com IA generativa nativa (Qlik Answers)
 
 ![Ingestão rodando no Airflow](docs/images/airflow.png)
 *DAG `btc_bronze_pipeline`, 25 execuções, 100% de sucesso, rodando de hora em hora.*
+
+O Airflow não é um serviço gerenciado — é uma instância completa self-hosted,
+subida via Docker Compose (scheduler, webserver, Postgres e um container de
+git-sync), com todo o ambiente configurado do zero: variáveis, conexões,
+e as bibliotecas Python que as DAGs precisam.
+
+O ponto que mais gosto desse setup: **não existe deploy manual**. O
+container `git-sync` fica observando o repositório no GitHub e clona
+automaticamente qualquer novidade — quando uma nova DAG ou um script de
+extração é commitado e enviado (`git push`), o Airflow detecta a mudança
+sozinho e a DAG já aparece disponível na interface, sem precisar reiniciar
+nada. O mesmo vale para adicionar uma biblioteca nova: basta declarar no
+`requirements.txt` do projeto e subir o Docker de novo — sem tocar em
+nenhum servidor manualmente.
 
 ## Por que arquitetura medalhão, e não uma tabela só
 
@@ -60,14 +96,33 @@ row tracking e deletion vectors habilitados:
 
 ![Detalhes da tabela no Unity Catalog](docs/images/detalhes_tabela.png)
 
-## Observando o próprio pipeline
+## Glossário de indicadores — documentação como parte do produto
 
-Além do dashboard de negócio, montei um painel operacional nativo do
-Databricks só para acompanhar a saúde da carga — volume processado por
-camada, duração média, execuções por dia. Não é comum em projeto de
-portfólio, mas é exatamente o tipo de coisa que se cobra em produção.
+Governança não pode parar no Catalog Explorer, onde só quem tem acesso ao
+Databricks enxerga. Por isso o dashboard tem uma página própria de
+Glossário, alimentada por uma tabela dedicada
+(`bitcoin.documentacao.glossario_indicadores`): cada indicador do Panorama
+tem definição em linguagem simples, fórmula de cálculo e a coluna exata da
+Gold que o origina — rastreável até a fonte, igual à linhagem técnica, só
+que legível por quem não é engenheiro de dados.
 
-![Painel de cargas e processamento](docs/images/dashboard_cargas.png)
+![Página de Glossário no dashboard](docs/images/glossario.png)
+
+O próprio card "Quantidade de indicadores" no topo da página é dinâmico —
+conta direto da tabela, então documentar um indicador novo no Databricks
+já atualiza o dashboard, sem precisar editar nada manualmente no Qlik.
+
+## Design antes de código
+
+Antes de montar qualquer objeto no Qlik, o layout inteiro — sidebar,
+paleta de cores, tipografia, espaçamento dos cards de KPI — foi desenhado
+primeiro no Figma, como referência visual reutilizável para as próximas
+páginas do dashboard (Sazonalidade, Volatilidade, Volume, Preço e
+tendência). Isso evitou o problema mais comum de dashboard de BI: cada
+página com um estilo levemente diferente, porque foi feita "no olho"
+direto na ferramenta.
+
+![Layout desenhado no Figma](docs/images/figma_layout.png)
 
 ## O dashboard final
 
@@ -78,18 +133,29 @@ em linguagem natural sobre os dados.
 
 ![Dashboard Blockwatch com IA generativa](docs/images/qlik_ia.png)
 
+## Observando o próprio pipeline
+
+Além do dashboard de negócio, montei um painel operacional nativo do
+Databricks só para acompanhar a saúde da carga — volume processado por
+camada, duração média, execuções por dia. Não é comum em projeto de
+portfólio, mas é exatamente o tipo de coisa que se cobra em produção.
+
+![Painel de cargas e processamento](docs/images/dashboard_cargas.png)
+
 ## Stack
 
 | Camada | Tecnologia |
 |---|---|
+| Design | Figma — layout e sistema visual desenhados antes da implementação |
 | Ingestão | Python (`requests`) · API da Binance |
-| Orquestração | Apache Airflow, self-hosted em Docker |
+| Orquestração | Apache Airflow, self-hosted em Docker (Docker Compose + git-sync) |
 | Lakehouse | Databricks Free Edition · Delta Lake · Unity Catalog |
 | Transformação | SQL (notebooks versionados no Git) |
 | Governança | Unity Catalog: linhagem automática, comentários, controle de acesso |
+| Documentação | Glossário de indicadores, versionado como tabela na Gold |
 | Observabilidade | Dashboard nativo do Databricks sobre o histórico Delta |
 | Consumo | Qlik Cloud, com IA generativa nativa |
-| Versionamento | Git, sincronizado direto no Workspace do Databricks |
+| Versionamento | Git, sincronizado com o Airflow (git-sync) e o Workspace do Databricks |
 
 ## Estrutura do repositório
 
@@ -110,7 +176,8 @@ lakehouse-bitcoin/
 
 O que já está rodando de ponta a ponta: ingestão incremental, três camadas
 no Databricks com atualização automática por gatilho de tabela, governança
-básica aplicada, e o dashboard publicado no Qlik Cloud.
+básica aplicada, glossário de indicadores publicado, e o dashboard no ar
+no Qlik Cloud.
 
 Próximo passo natural, se eu continuar: cruzar com indicadores
 macroeconômicos (taxa de juros, por exemplo) — já testei a viabilidade de
