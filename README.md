@@ -203,6 +203,10 @@ macroeconômicos (taxa de juros, por exemplo) — já testei a viabilidade de
 puxar dados do FRED direto no Databricks, mas deixei fora do escopo desta
 primeira entrega para não adiar o que já estava pronto.
 
+## Licença
+
+Distribuído sob a licença MIT — veja [LICENSE](LICENSE).
+
 ## Autor
 
 Dalisson Silva · [LinkedIn](https://www.linkedin.com/in/dalisson-silva-a01a591a7/) · [GitHub](https://github.com/DalissonSilva)
