@@ -166,7 +166,7 @@ template pronto — cores, tipografia e ícones desenhados para o projeto.
 O painel também usa IA generativa nativa do Qlik para responder perguntas
 em linguagem natural sobre os dados.
 
-![Dashboard Blockwatch com IA generativa](docs/images/dashboard_qlik_ia_gif.gif)
+![Dashboard Blockwatch com IA generativa](docs/images/qlik_ia.png)
 
 ## Observando o próprio pipeline
 
