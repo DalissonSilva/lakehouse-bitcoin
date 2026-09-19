@@ -32,6 +32,15 @@ não pela tabela.
 
 ![Arquitetura medalhão: da fonte de dados ao Qlik Cloud](docs/images/arquitetura_medalhao.png)
 
+## Ambiente de desenvolvimento
+
+![Ambiente de desenvolvimento: WSL2/Ubuntu e uv](docs/images/ambiente_dev.png)
+
+Desenvolvimento feito inteiramente dentro do WSL2 (Ubuntu) — não direto
+no Windows — e dependências geridas com `uv` em vez de `pip` global,
+mantendo cada projeto com seu próprio ambiente isolado, sem instalar
+nada solto na máquina.
+
 ## O pipeline, de verdade
 
 ```
