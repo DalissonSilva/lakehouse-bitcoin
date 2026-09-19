@@ -30,6 +30,8 @@ Cada tabela da camada Gold existe porque responde a uma dessas perguntas
 — não o contrário. Isso guiou toda a modelagem: comecei pela pergunta,
 não pela tabela.
 
+![Arquitetura medalhão: da fonte de dados ao Qlik Cloud](docs/images/arquitetura_medalhao.png)
+
 ## O pipeline, de verdade
 
 ```
