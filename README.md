@@ -78,6 +78,24 @@ tabela de rejeitados à parte. A gold já entrega métricas prontas — médias
 móveis de 7/30/50/200 dias, volatilidade anualizada, drawdown — para o
 dashboard não precisar recalcular nada em tempo de consulta.
 
+## Atualização automática das camadas Silver e Gold
+
+A ponte entre a ingestão (Airflow) e o consumo (Qlik) é um **Job do
+Databricks** com duas tarefas encadeadas — `carrega_silver_btc` e
+`carrega_gold_btc`, a segunda só roda se a primeira terminar com sucesso.
+
+![Tarefas do Job: silver → gold](docs/images/job_tarefas.png)
+
+Nada disso roda por horário fixo. O gatilho é por **atualização de
+tabela**: o Job fica observando `bitcoin.bronze.btc_ohlcv` e dispara
+sozinho assim que a ingestão grava dados novos — sem cron, sem "chutar"
+um horário com margem de segurança torcendo pros dados já estarem
+prontos.
+
+![Histórico de execuções do Job, disparado por atualização de tabela](docs/images/job_databricks.png)
+*Toda execução recente aparece como "Por atualização de tabela", entre 1 e
+3 minutos de duração, sem nenhuma falha no período.*
+
 ## Governança, não só pipeline
 
 Cada tabela tem comentário de coluna, com boa parte deles gerados com
@@ -149,6 +167,7 @@ portfólio, mas é exatamente o tipo de coisa que se cobra em produção.
 | Design | Figma — layout e sistema visual desenhados antes da implementação |
 | Ingestão | Python (`requests`) · API da Binance |
 | Orquestração | Apache Airflow, self-hosted em Docker (Docker Compose + git-sync) |
+| Orquestração interna | Databricks Jobs, com gatilho por atualização de tabela (bronze → silver → gold) |
 | Lakehouse | Databricks Free Edition · Delta Lake · Unity Catalog |
 | Transformação | SQL (notebooks versionados no Git) |
 | Governança | Unity Catalog: linhagem automática, comentários, controle de acesso |
