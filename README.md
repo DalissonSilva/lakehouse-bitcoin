@@ -209,4 +209,4 @@ Distribuído sob a licença MIT — veja [LICENSE](LICENSE).
 
 ## Autor
 
-Dalisson Silva · [LinkedIn](https://www.linkedin.com/in/dalisson-silva-a01a591a7/) · [GitHub](https://github.com/DalissonSilva)
+Dalisson Silva ·· [LinkedIn](https://www.linkedin.com/in/dalisson-silva-a01a591a7/) ·· [GitHub](https://github.com/DalissonSilva)
