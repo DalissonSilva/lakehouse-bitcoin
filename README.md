@@ -168,6 +168,8 @@ em linguagem natural sobre os dados.
 
 ![Dashboard Blockwatch com IA generativa](docs/images/qlik_ia.png)
 
+![Dashboard Blockwatch com IA generativa - Página Detalhamento](docs/images/qlik_det.png)
+
 ## Observando o próprio pipeline
 
 Além do dashboard de negócio, montei um painel operacional nativo do
